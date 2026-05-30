@@ -26,8 +26,17 @@ MODEL_PATH = Path(__file__).resolve().parent / "data" / "civicguard_distilbert"
 
 @st.cache_resource
 def load_model_and_tokenizer():
-    tokenizer = AutoTokenizer.from_pretrained(str(MODEL_PATH))
-    model = AutoModelForSequenceClassification.from_pretrained(str(MODEL_PATH))
+    # If running in cloud (model weights ignored by git), fall back to public Hugging Face model
+    local_weights = MODEL_PATH / "model.safetensors"
+    if local_weights.exists():
+        tokenizer = AutoTokenizer.from_pretrained(str(MODEL_PATH))
+        model = AutoModelForSequenceClassification.from_pretrained(str(MODEL_PATH))
+    else:
+        # High-accuracy public Toxicity Classifier (loaded directly in cloud)
+        fallback_model = "unitary/toxic-bert"
+        tokenizer = AutoTokenizer.from_pretrained(fallback_model)
+        model = AutoModelForSequenceClassification.from_pretrained(fallback_model)
+    
     model.eval()
     return tokenizer, model
 
@@ -37,13 +46,20 @@ except Exception as e:
     st.error(f"Error loading AI Model: {e}")
     st.stop()
 
+# Helper mapping to standardize index labels to human-readable categories
 label_mapping = {
     "LABEL_0": "toxic",
     "LABEL_1": "severe_toxic",
     "LABEL_2": "obscene",
     "LABEL_3": "threat",
     "LABEL_4": "insult",
-    "LABEL_5": "identity_hate"
+    "LABEL_5": "identity_hate",
+    "toxic": "toxic",
+    "severe_toxic": "severe_toxic",
+    "obscene": "obscene",
+    "threat": "threat",
+    "insult": "insult",
+    "identity_hate": "identity_hate"
 }
 
 def predict_text(text):
@@ -62,7 +78,9 @@ def predict_text(text):
     probabilities = torch.sigmoid(outputs.logits)[0]
     scores = {}
     for i, score in enumerate(probabilities):
-        scores[label_mapping[f"LABEL_{i}"]] = round(float(score), 4)
+        label_name = model.config.id2label.get(i, f"LABEL_{i}")
+        mapped_name = label_mapping.get(label_name, label_name)
+        scores[mapped_name] = round(float(score), 4)
     return scores
 
 # Title and header
