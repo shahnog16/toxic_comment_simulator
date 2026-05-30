@@ -57,12 +57,12 @@ If you want to run the FastAPI backend server separately from the Streamlit fron
 * **Terminal 1 (Start FastAPI Backend):**
   ```powershell
   cd "C:\Users\Windows\Desktop\ai proj\CivicGuard\api"
-  ..\.venv\Scripts\python -m uvicorn app:app --host 127.0.0.1 --port 8000
+  ..\.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000
   ```
 * **Terminal 2 (Start Streamlit Frontend):**
   ```powershell
   cd "C:\Users\Windows\Desktop\ai proj\CivicGuard"
-  .venv\Scripts\streamlit run dashboard/app.py
+  .venv\Scripts\streamlit run dashboard/dashboard_app.py
   ```
 
 ---
@@ -73,10 +73,9 @@ If you want to run the FastAPI backend server separately from the Streamlit fron
 CivicGuard/
 ├── app.py                      # Unified Deployment Entrypoint (Streamlit + Model Inference)
 ├── api/
-│   ├── app.py                  # FastAPI Backend API Server
-│   └── main.py                 # FastAPI original entrypoint
+│   └── main.py                 # FastAPI Backend API Server (was api/app.py)
 ├── dashboard/
-│   └── app.py                  # Streamlit Frontend Dashboard (API requester)
+│   └── dashboard_app.py        # Streamlit Frontend Dashboard (API requester, was dashboard/app.py)
 ├── data/
 │   └── civicguard_distilbert/  # Pre-trained DistilBERT PyTorch Model & Tokenizer files
 ├── database/

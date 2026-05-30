@@ -12,14 +12,14 @@ If you have already set up the environment and installed the dependencies, follo
 Open a terminal in the `CivicGuard` directory and run:
 ```powershell
 cd api
-..\.venv\Scripts\python -m uvicorn app:app --host 127.0.0.1 --port 8000
+..\.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 *(Keep this terminal open to keep the backend server running).*
 
 ### 2. Start the Streamlit Frontend Dashboard
 Open a **second terminal window** in the `CivicGuard` directory and run:
 ```powershell
-.venv\Scripts\streamlit run dashboard/app.py
+.venv\Scripts\streamlit run dashboard/dashboard_app.py
 ```
 This will automatically launch the web dashboard in your browser.
 
@@ -28,9 +28,9 @@ This will automatically launch the web dashboard in your browser.
 ## System Architecture Overview
 
 CivicGuard is composed of three main components:
-1. **Backend Engine (`api/app.py`)**: A FastAPI application that loads a local DistilBERT sequence classification model to moderate and score inputs for toxicity, threats, obscenity, insults, and identity hate.
+1. **Backend Engine (`api/main.py`)**: A FastAPI application that loads a local DistilBERT sequence classification model to moderate and score inputs for toxicity, threats, obscenity, insults, and identity hate.
 2. **Database Module (`database/db.py`)**: An SQLite-based storage engine that keeps logs of all comments, scores, and decisions.
-3. **Frontend Dashboard (`dashboard/app.py`)**: A Streamlit dashboard that presents aggregate metrics, recent logs, and a text analysis interface connecting to the FastAPI backend.
+3. **Frontend Dashboard (`dashboard/dashboard_app.py`)**: A Streamlit dashboard that presents aggregate metrics, recent logs, and a text analysis interface connecting to the FastAPI backend.
 
 ---
 
@@ -76,7 +76,7 @@ The backend handles model inference and database logging. It must run on port `8
 To launch the FastAPI server locally, navigate to the `api` directory and run:
 ```powershell
 cd api
-..\.venv\Scripts\python -m uvicorn app:app --host 127.0.0.1 --port 8000
+..\.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 *Note: If you run it from the `api` directory, relative paths to the model directory (`../data/civicguard_distilbert`) will resolve correctly.*
 
@@ -100,7 +100,7 @@ The frontend connects to the backend and the SQLite database.
 ### Running Locally
 From the `CivicGuard` main directory, run:
 ```powershell
-.venv\Scripts\streamlit run dashboard/app.py
+.venv\Scripts\streamlit run dashboard/dashboard_app.py
 ```
 This will automatically launch the web dashboard in your browser (usually at `http://localhost:8501`).
 
