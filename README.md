@@ -1,3 +1,13 @@
+---
+title: CivicGuard Toxic Comment Simulator
+emoji: 🛡️
+colorFrom: blue
+colorTo: indigo
+sdk: streamlit
+app_file: app.py
+pinned: false
+---
+
 # 🛡️ CivicGuard: Toxic Comment Simulator
 
 An AI-powered content moderation engine and civility analysis dashboard designed to flag toxic inputs and safeguard community discussions. Powered by **DistilBERT** for real-time sequence classification and **Streamlit** for visual analysis.
