@@ -12,8 +12,6 @@ __pycache__/
 # Local Database files
 database/civicguard.db
 
-# Heavy model weights (exceeds GitHub's 100MB size limit)
-data/civicguard_distilbert/model.safetensors
 
 # OS files
 .DS_Store
