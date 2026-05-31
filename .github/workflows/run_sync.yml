@@ -20,4 +20,4 @@ jobs:
       - name: Push to HF
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push --force https://shahmeer16:$HF_TOKEN@huggingface.co/spaces/shahmeer16/toxic-comment-simulator main
+        run: git push --force https://shahmeer16:$HF_TOKEN@huggingface.co/spaces/shahmeer16/toxic.comment.sim main
